@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Albion Market Analytics</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/themes.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body data-theme="albion">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-coins"></i>
+                <span>Albion Market</span>
+            </div>
+            <nav class="nav">
+                <a href="#prices" class="nav-link active">📊 Цены</a>
+                <a href="#history" class="nav-link">📈 История</a>
+            </nav>
+            <div class="header-controls">
+                <div class="theme-selector">
+                    <select id="themeSelect">
+                        <option value="albion">🎮 Albion</option>
+                        <option value="dark">🌙 Темная</option>
+                        <option value="light">☀️ Светлая</option>
+                        <option value="royal">👑 Королевская</option>
+                        <option value="forest">🌲 Лесная</option>
+                    </select>
+                </div>
+                <button class="refresh-btn" title="Обновить данные">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Filters Section -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="filters-grid">
+                <!-- Поиск -->
+                <div class="filter-group">
+                    <label>🔍 Поиск предмета</label>
+                    <div class="search-input">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Введите название предмета...">
+                    </div>
+                </div>
+
+                <!-- Город -->
+                <div class="filter-group">
+                    <label>🏙️ Город</label>
+                    <select id="cityFilter">
+                        <option value="">Все города</option>
+                        <option value="Lymhurst">🌿 Лимхерст</option>
+                        <option value="Bridgewatch">🔥 Бриджуотч</option>
+                        <option value="Martlock">🛡️ Мартлок</option>
+                        <option value="Thetford">💀 Тетфорд</option>
+                        <option value="Fort Sterling">❄️ Форт Стерлинг</option>
+                        <option value="Caerleon">⚔️ Кэрлион</option>
+                    </select>
+                </div>
+
+                <!-- Тиер -->
+                <div class="filter-group">
+                    <label>⭐ Тиер</label>
+                    <select id="tierFilter">
+                        <option value="">Все тиры</option>
+                        <option value="4">T4</option>
+                        <option value="5">T5</option>
+                        <option value="6">T6</option>
+                        <option value="7">T7</option>
+                        <option value="8">T8</option>
+                    </select>
+                </div>
+
+                <!-- Качество -->
+                <div class="filter-group">
+                    <label>🎯 Качество</label>
+                    <select id="qualityFilter">
+                        <option value="">Все качества</option>
+                        <option value="normal">⚪ Нормальное</option>
+                        <option value="good">🟢 Хорошее</option>
+                        <option value="excellent">🔵 Отличное</option>
+                        <option value="outstanding">🟣 Выдающееся</option>
+                    </select>
+                </div>
+
+                <!-- Сброс фильтров -->
+                <div class="filter-group">
+                    <label>&nbsp;</label>
+                    <button class="clear-filters-btn" id="clearFilters">
+                        <i class="fas fa-times"></i> Сбросить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Overview -->
+    <section class="stats-overview">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-value">1,247</div>
+                    <div class="stat-label">Отслеживаемых предметов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏪</div>
+                    <div class="stat-value">86%</div>
+                    <div class="stat-label">Активных рынков</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔄</div>
+                    <div class="stat-value">3.2M</div>
+                    <div class="stat-label">Обновлений в день</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-value">15.7%</div>
+                    <div class="stat-label">Средняя прибыль</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Вкладка Цены -->
+            <div class="tab-content active" id="prices-content">
+                <div class="card price-table-section">
+                    <div class="card-header">
+                        <h2>🏷️ Рыночные цены в реальном времени</h2>
+                        <div class="card-actions">
+                            <button class="export-btn" id="exportData">
+                                <i class="fas fa-download"></i> Экспорт
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table id="priceTable">
+                            <thead>
+                                <tr>
+                                    <th data-sort="name">Предмет</th>
+                                    <th data-sort="type">Тип</th>
+                                    <th data-sort="tier">Тиер</th>
+                                    <th data-sort="quality">Качество</th>
+                                    <th data-sort="city">Город</th>
+                                    <th data-sort="sellPrice">Цена продажи</th>
+                                    <th data-sort="buyPrice">Цена покупки</th>
+                                    <th data-sort="profit">Прибыль</th>
+                                    <th data-sort="quantity">Объем</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="priceTableBody">
+                                <!-- Данные будут загружены через JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вкладка История -->
+            <div class="tab-content" id="history-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📈 Исторические данные</h2>
+                        <div class="time-filters">
+                            <select id="timeRange">
+                                <option value="7d">7 дней</option>
+                                <option value="30d">30 дней</option>
+                                <option value="90d">90 дней</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <h3>📊 Динамика цен популярных предметов</h3>
+                            <canvas id="priceHistoryChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>🏙️ Сравнение цен по городам</h3>
+                            <canvas id="cityComparisonChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>💰 Топ арбитражных возможностей</h3>
+                            <canvas id="arbitrageChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>📈 Волатильность рынка</h3>
+                            <canvas id="volatilityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 Albion Market Analytics. Данные обновляются каждые 5 минут.</p>
+                <div class="footer-links">
+                    <span>🕒 Последнее обновление: <span id="lastUpdate">--:--</span></span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="data/mock-data.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/charts.js"></script>
+</body>
+</html>
